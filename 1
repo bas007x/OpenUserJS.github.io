@@ -1,0 +1,163 @@
+!function(){"use strict";
+// ==UserScript==
+// @name          uso - installWith
+// @namespace     http://userscripts.org/users/37004
+// @description   Adds option to install script with an icon and/or updater plus the original script advisor. "So easy, a cavemonkey can do it"
+// @copyright     2010+, Marti Martz (http://userscripts.org/users/37004)
+// @license       CC-BY-NC-SA-4.0; https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+// @license       GPL-3.0-or-later; http://www.gnu.org/licenses/gpl-3.0.txt
+// @version       2.0.4.2eol
+// @icon          https://raw.githubusercontent.com/Martii/UserScripts/master/src/uso/installWith/res/icon48.png
+// @homepageURL   https://github.com/Martii/UserScripts/tree/master/src/uso/installWith
+// @homepageURL   https://openuserjs.org/scripts/marti/uso_-_installWith
+// @homepageURL   http://userscripts.org/scripts/show/68219
+// @supportURL    http://userscripts.org/topics/45480
+// @include /^https?://userscripts.org(?::\d{1,5})?/?$/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/scripts/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/topics//
+// @include /^https?://userscripts\.org(?::\d{1,5})?/reviews//
+// @include /^https?://userscripts\.org(?::\d{1,5})?/users/.+?/scripts/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/users/.+?/favorites/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/groups/\d+/scripts/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/tags//
+// @include /^https?://userscripts\.org(?::\d{1,5})?/home/(?:scripts|favorites)/
+// @include /^https?://userscripts\.org(?::\d{1,5})?/posts//
+// @include http://userscripts.org:8080/
+// @include http://userscripts.org:8080/scripts*
+// @include http://userscripts.org:8080/topics/*
+// @include http://userscripts.org:8080/reviews/*
+// @include http://userscripts.org:8080/users/*/scripts*
+// @include http://userscripts.org:8080/users/*/favorites*
+// @include http://userscripts.org:8080/groups/*/scripts*
+// @include http://userscripts.org:8080/tags/*
+// @include http://userscripts.org:8080/home/scripts*
+// @include http://userscripts.org:8080/home/favorites*
+// @include http://userscripts.org:8080/posts*
+// @include http://userscripts.org/
+// @include http://userscripts.org/scripts*
+// @include http://userscripts.org/topics/*
+// @include http://userscripts.org/reviews/*
+// @include http://userscripts.org/users/*/scripts*
+// @include http://userscripts.org/users/*/favorites*
+// @include http://userscripts.org/groups/*/scripts*
+// @include http://userscripts.org/tags/*
+// @include http://userscripts.org/home/scripts*
+// @include http://userscripts.org/home/favorites*
+// @include http://userscripts.org/posts*
+// @include https://userscripts.org/
+// @include https://userscripts.org/scripts*
+// @include https://userscripts.org/topics/*
+// @include https://userscripts.org/reviews/*
+// @include https://userscripts.org/users/*/scripts*
+// @include https://userscripts.org/users/*/favorites*
+// @include https://userscripts.org/groups/*/scripts*
+// @include https://userscripts.org/tags/*
+// @include https://userscripts.org/home/scripts*
+// @include https://userscripts.org/home/favorites*
+// @include https://userscripts.org/posts*
+// @exclude /^https?://userscripts\.org(?::\d{1,5})?/scripts/diff//
+// @exclude /^https?://userscripts\.org(?::\d{1,5})?/scripts/version//
+// @exclude http://userscripts.org/scripts/diff/*
+// @exclude http://userscripts.org/scripts/version/*
+// @exclude https://userscripts.org/scripts/diff/*
+// @exclude https://userscripts.org/scripts/version/*
+// @updateURL   http://userscripts.org:8080/scripts/source/68219.meta.js
+// @installURL  http://userscripts.org:8080/scripts/source/68219.user.js
+// @downloadURL http://userscripts.org:8080/scripts/source/68219.user.js
+// @resource icon  https://raw.githubusercontent.com/Martii/UserScripts/master/src/uso/installWith/res/icon32.png
+// @resource gmc   https://raw.githubusercontent.com/sizzlemctwizzle/GM_config/master/gm_config_icon.png
+// @resource usoc  https://raw.githubusercontent.com/Martii/UserScripts/master/res/compatibilityMatrix/usoc16.png
+// @resource uso   https://raw.githubusercontent.com/Martii/UserScripts/master/res/compatibilityMatrix/uso16.png
+// @resource clear https://raw.githubusercontent.com/Martii/UserScripts/master/src/uso/installWith/res/clear1.gif
+// @resource more  https://raw.githubusercontent.com/Martii/UserScripts/master/src/uso/installWith/res/more9x5.gif
+// @resource less  https://raw.githubusercontent.com/Martii/UserScripts/master/src/uso/installWith/res/less5x9.gif
+// @resource list http://beta.usocheckup.dune.net/list.json
+//@require https://secure.dune.net/usocheckup/68219.js?method=install&open=window&maxage=1&custom=yes&topicid=45479&id=usoCheckup
+//@require http://userscripts.org/scripts/source/61794.user.js
+// @require https://raw.githubusercontent.com/Martii/UserScripts/dc7d27fef916db3bea640139bd852b2c75a08ff8/lib/GM_setStyle/GM_setStyle.js
+// @require https://raw.githubusercontent.com/Martii/GM_config/a0d0066ffaefb5fbb3402c3d46ac705e8b4124d8/gm_config.js
+// @grant GM_addStyle
+// @grant GM_deleteValue
+// @grant GM_getResourceText
+// @grant GM_getResourceURL
+// @grant GM_getValue
+// @grant GM_log
+// @grant GM_openInTab
+// @grant GM_registerMenuCommand
+// @grant GM_setClipboard
+// @grant GM_setValue
+// @grant GM_xmlhttpRequest
+// ==/UserScript==
+if(!document||!document.body)return;const gTHIS=this,gJSE=!("object"!=typeof window.wrappedJSObject||"function"!=typeof window.wrappedJSObject.jQuery),gPROTOCOL=location.protocol,gPORTX=/^80$/.test(location.port)?"":":8080",gHOSTNAME=location.hostname,gPATHNAME=location.pathname,gISHOMEPAGE=/^\/scripts\/show\//.test(gPATHNAME),gHASH=location.hash,gCSS=GM_setStyle({media:"screen, projection",data:".hid { display: none; } .HID { display: none !important } .blah { color: #f00 !important; } .halb { background-color: #f00 !important; }"}),gUAC=!!document.body.querySelector(".alt_topbottom"),gLIST=GM_getResourceText("list").replace(/[\n\r\s]*\}[\n\r\s]*$/,'');let gGROUPS,gANODES,gQNODES,gBYTESMAX,gBYTESMIN,gLoginMsgShown,gLoginTrying,gLoginTried,gIdle=!0,gISFRAMELESS=!1;try{gISFRAMELESS=window==window.top}catch(e){}
+/**
+   *
+   */function byteLength(aString){return unescape(encodeURIComponent(aString)).length}
+/**
+   *
+   */function genReport(aReports,aReported,aMarkdown){let i=0,post="";return aMarkdown?aReports.split(",").forEach((function(e,i,a){let found;i%30==0&&(0!=i&&(post+='\n'),post+='Potentially unwanted scripts\n\n'),aReported.split(",").forEach((function(e1,i1,a1){e1==e&&(found=!0)})),post+=found?'* '+e+'\n':'* ['+e+']('+e+')\n',i++})):post=aReports.split(',').map((function(aE){let found,item;return aReported.split(",").forEach((function(e1,i1,a1){e1==aE&&(found=!0)})),item=found?'\n<li>'+aE+'</li>':'\n<li><a href="'+aE+'">'+aE+'</a></li>',aE=i%30==0?(i?'\n</ul>\n':'')+'<p>Potentially unwanted scripts</p>\n<ul>'+item:item,i++,aE})).join('')+'\n</ul>',post}
+/**
+   *
+   */function doReport(aReports){GM_xmlhttpRequest({retry:4,url:"/topics/9.rss",method:"GET",onload:function(aR){switch(aR.status){case 404:this._retry=0;case 500:case 502:case 503:if(gJSE&&this.retry-- >0){setTimeout(GM_xmlhttpRequest,3e3+Math.round(5e3*Math.random()),this);// NOTE: Detached
+break;// NOTE: Watchpoint
+}case 200:let xml=(new DOMParser).parseFromString(aR.responseText,"text/xml"),reported=[],descriptions=xml.querySelectorAll("item description");for(let thisDescription,i=0;thisDescription=descriptions[i++];){let docfrag=document.createDocumentFragment(),nodeDiv=document.createElement("div");nodeDiv.innerHTML=thisDescription.textContent,docfrag.appendChild(nodeDiv);let anchors=docfrag.querySelectorAll("a");for(let thisAnchor,j=0;thisAnchor=anchors[j++];){let matches;matches=thisAnchor.href.match(/^https?:\/\/userscripts\.org(\/users\/\d+)\/?/),(matches||(matches=thisAnchor.href.match(/^https?:\/\/userscripts\.org(?::\d{1,5})?\/scripts\/show(\/\d+)\/?/))||(matches=thisAnchor.href.match(/^https?:\/\/userscripts\.org(?::\d{1,5})?(\/\d+)\/?/)))&&reported.push(matches[1])}}let count=0,reports=aReports.split(",");if(reports.forEach((function(e,i,a){reported.forEach((function(e1,i1,a1){e1==e&&++count}))})),count>0&&count==reports.length);else{let isReply,thisNode=document.querySelector("#content .posts tbody > tr:last-child .author .edit a.utility");if(thisNode){let dateNode=document.querySelector("#content .posts tbody > tr:last-child .author .date abbr");if(dateNode){let dateLastPost=new Date(dateNode.title);Date.now()-dateLastPost>36e5&&(thisNode=void 0)}else gmcHome.get("enableDebugging")&&console.warn('Last posting date not found...reverting to reply mode'),thisNode=void 0}thisNode||(thisNode=document.querySelector("#content > p a.utility"),isReply=!0),!thisNode||"Reply to topic"!=thisNode.textContent&&"Edit post"!=thisNode.textContent||setTimeout((function(){thisNode.click();let that;isReply?setTimeout(that=function(){let post_body=document.querySelector("#reply textarea#post_body");if(post_body){document.querySelector("#reply .previewBtn");post_body.value=genReport(aReports,reported.join(','),document.querySelector("#reply #post_markdown").checked)}else setTimeout(that,500)},0):setTimeout(that=function(){let post_body=document.querySelector("#edit textarea#edit_post_body");if(post_body){!!document.querySelector("#edit .previewBtn")?post_body.value=post_body.textContent+'\n'+genReport(aReports,reported.join(','),document.querySelector("#edit #post_markdown").checked):post_body.textContent+='\n'+genReport(aReports,reported.join(','),document.querySelector("#edit #post_markdown").checked)}else setTimeout(that,500)},0)}),1e3)}}}})}
+/**
+   *
+   */
+/**
+   *
+   */
+function lastValueOf(aMb,aKey,aPrefix){if(aPrefix){if(aMb[aPrefix]&&aMb[aPrefix][aKey])return"string"==typeof aMb[aPrefix][aKey]?aMb[aPrefix][aKey]:aMb[aPrefix][aKey][aMb[aPrefix][aKey].length-1]}else if(aMb[aKey])return"string"==typeof aMb[aKey]?aMb[aKey]:aMb[aKey][aMb[aKey].length-1]}
+/**
+   *
+   */function toArray(aName,aMb){return aMb?aMb[aName]?Array.isArray(aMb[aName])?aMb[aName]:[aMb[aName]]:void 0:[aName]}
+/**
+   *
+   */function addValue(aValue,aName,aMb){return aMb[aName]?(aMb[aName]=toArray(aName,aMb),aMb[aName].push(aValue)):aMb[aName]=aValue,aMb[aName];// TODO: Opt
+}
+/**
+   *
+   */
+/**
+   *
+   */
+function isViewing(thisNode){if(!thisNode||1!==thisNode.nodeType)return!1;if(!gJSE||gmcHome.get("disableViewportHold"))return!0;/** Work-around for !javascript.enabled issue **/let html,rect;// BUG: Needs gJSE to return meaningful values on FF 20+?
+return html=document.documentElement,rect=thisNode.getBoundingClientRect(),!!rect&&rect.top<=html.clientHeight&&rect.right>=0&&rect.bottom>=0&&rect.left<=html.clientWidth}
+/**
+   *
+   */function addToQspList(aQsp,aItem){return aItem&&(aQsp+=aQsp?","+aItem:aItem),aQsp}
+/**
+   *
+   */function appendToQs(aQs,aQsp){return aQsp&&(aQs+=aQs?"&"+aQsp:"?"+aQsp),aQs}
+/**
+   *
+   */function nag(ev){ev.preventDefault(),gmcHome.get("skipVerifyExclusion")||confirm('Are you sure?')&&confirm('Are you really sure?')&&confirm('Are you really, really sure?\n\nLast chance before impending doom?')&&(ev.target.removeEventListener("click",nag,!1),ev.target.click())}
+/**
+   *
+   */function pingCount(ev){let matches=ev.target.pathname.match(/(\d+)(?:\/\d+)?\.user\.js$/);if(matches){let scriptId;[,scriptId]=matches,GM_xmlhttpRequest({retry:4,url:"http"+(/^https:$/i.test(gPROTOCOL)||gmcHome.get("forceInstallSecure")?"s":"")+"://userscripts.org"+gPORTX+"/scripts/source/"+scriptId+".user.js",method:"HEAD",onload:function(aR){switch(aR.status){case 403:gmcHome.get("enableDebugging")&&console.warn('Recently unlisted script');break;case 404:this._retry=0;case 500:case 502:case 503:gJSE&&this.retry-- >0?setTimeout(GM_xmlhttpRequest,3e3+Math.round(5e3*Math.random()),this):gmcHome.get("enableDebugging")&&console.warn('Unable to increment script count for update method: '+xhr.status)}}})}}
+/**
+   *
+   */
+/**
+   *
+   */
+function advise(aSa,aNode,aMb,aEmbed,aReduce,aCollapse,aHide){
+//if (gmcHome.get("enableDebugging")) {
+//console.groupCollapsed(JSON.stringify(aMb, null, " ")); // BUG: FF 27 doesn't collapse these
+//console.groupEnd();
+//}
+let title,max,deletedUser,advisories=["ABORT","SEVERE","HIGH","ELEVATE","GUARD","LOW","XCLUDE","EMBED","UNKNOWN","INFO"];
+/** Sidebar **/
+if(advisories.forEach((function(e,i,a){aSa[e]&&(max||(max=e),title?title+="\n"+e+":":title=e+":",title+="\n  "+aSa[e].join("\n  "));let advisory,sa=Array.isArray(aSa[e])?aSa[e]:[aSa[e]];let i=0;for(sa.length;advisory=sa[i++];)
+// NOTE: Post actions
+"ABORT"==e&&"Deleted user"==aSa[e]&&(aReduce=!0,aCollapse=!0,gmcHome.get("alwaysHideDeletedUser")?aNode.parentNode.classList.add("hid"):deletedUser=!0)})),max&&(aEmbed&&aNode.classList.add("saEMBED"),aNode.classList.add("sa"+max),aNode.classList.add("sab"+max)),title&&(aNode.title=title),"INFO"==max&&(aNode.title="UNKNOWN:\n  Undetermined\n"+aNode.title,pushAdvisory(aSa,"UNKNOWN","Undetermined")),gISHOMEPAGE){let hookNode=document.getElementById("script_sidebar");if(hookNode){GM_setStyle({node:gCSS,data:["#script_sidebar h7 { display: block; font-weight: bold; }","#script_sidebar h7 dl { margin-bottom: 0; font-size: 0.9em; }","#script_sidebar h7 dt { font-weight: bold; padding: 0.25em 0.5em 0.5em 0.66em;  }","#script_sidebar h7 dd { font-weight: normal; font-style: italic; padding-left: 0.5em; padding-right: 0.33em; }",".advisories { background-image: linear-gradient(to top, #ddd, rgba(255,255,255,0)); border: thin solid #aaa !important; border-radius: 0.25em 0.25em; cursor: default; font-family: sans-serif; font-weight: normal !important; padding: 0.25em 0.75em; text-align: left; width: auto; }",".advisories:hover { background-image: linear-gradient(to top, #bfe1ff, rgba(237,249,255,0)); }",".advisories a { margin-top: -0.0625em; position: absolute; right: 0.5em; }",".advisories img { max-height: 1.5em; }",".barlight { background-color: #eee; }",".barmedium { background-color: #ddd; }"].join("\n")}),advisories.reverse().forEach((function(e,i,a){if(aSa[e]){let nodeH7=document.createElement("h7");nodeH7.textContent=e,hookNode.insertBefore(nodeH7,hookNode.firstChild);let nodeDiv=document.createElement("div");nodeDiv.classList.add("sa");for(let thisSummary,j=0;thisSummary=aSa[e][j];j++){let thisDescription=thisSummary.split("\n").map((function(e){return e.trim()})),nodeDl=document.createElement("dl"),nodeDt=document.createElement("dt");nodeDt.textContent=thisDescription[0],j%2==0&&nodeDt.classList.add("barlight");for(let thisClarification,k=1;thisClarification=thisDescription[k];k++){let nodeDd=document.createElement("dd");nodeDd.textContent=thisClarification,k%2==1&&nodeDd.classList.add("barmedium"),nodeDt.appendChild(nodeDd)}nodeDl.appendChild(nodeDt),nodeDiv.appendChild(nodeDl),nodeH7.appendChild(nodeDiv)}}}));let nodeImg=document.createElement("img");nodeImg.src=GM_getResourceURL("icon"),nodeImg.title="uso - installWith",nodeImg.alt="installWith";let nodeA=document.createElement("a");nodeA.href="/scripts/show/68219";let nodeH6=document.createElement("h6");nodeH6.classList.add("advisories"),nodeH6.textContent="Advisor",nodeH6.addEventListener("click",(function(){gmcFilters.open(),lastValueOf(aMb,"author","uso")?(gmcFilters.fields.lastScriptWrightId.node.value=lastValueOf(aMb,"author","uso"),// NOTE: Watchpoint
+gmcFilters.fields.lastScriptWrightId.node.title=lastValueOf(aMb,"name","uso")):gmcFilters.fields.lastScriptWrightId.node.value="",gmcFilters.fields.lastUserScriptId.node.value=lastValueOf(aMb,"script","uso"),gmcFilters.fields.lastUserScriptId.node.title=lastValueOf(aMb,"title","uso")}),!1),nodeA.appendChild(nodeImg),nodeH6.appendChild(nodeA),hookNode.insertBefore(nodeH6,hookNode.firstChild)}}else{aHide&&!/(^\/users\/.+?\/scripts|^\/home\/scripts|^\/scripts\/show\/\d+)/.test(gPATHNAME)&&aNode.parentNode.classList.add("hid");let titleNode,descNode,actionsNodeDiv=document.createElement("div");if(actionsNodeDiv.classList.add("actions"),aNode.insertBefore(actionsNodeDiv,aNode.firstChild),aMb){if(titleNode=aNode.querySelector(".title"),titleNode){aCollapse&&(titleNode.classList.add("dim"),deletedUser&&titleNode.classList.add("delusr"));let maxLength=50,// NOTE: Watchpoint
+atName=lastValueOf(aMb,"name"),atUsoScript=lastValueOf(aMb,"script","uso"),title=titleNode.textContent,filterNodeA=document.createElement("a");filterNodeA.classList.add("action"),filterNodeA.href="#",filterNodeA.textContent="advisor",filterNodeA.addEventListener("click",(function(ev){ev.preventDefault(),gmcFilters.open(),lastValueOf(aMb,"author","uso")?(gmcFilters.fields.lastScriptWrightId.node.value=lastValueOf(aMb,"author","uso"),// NOTE: Watchpoint
+gmcFilters.fields.lastScriptWrightId.node.title=lastValueOf(aMb,"name","uso")):gmcFilters.fields.lastScriptWrightId.node.value="",gmcFilters.fields.lastUserScriptId.node.value=lastValueOf(aMb,"script","uso"),gmcFilters.fields.lastUserScriptId.node.title=lastValueOf(aMb,"title","uso")}),!1);let sourceNodeA=document.createElement("a");if(sourceNodeA.classList.add("action"),sourceNodeA.href="/scripts/review/"+atUsoScript,sourceNodeA.textContent="source",actionsNodeDiv.appendChild(sourceNodeA),actionsNodeDiv.appendChild(filterNodeA),atName){let matches=title.match(/(.*)\.\.\.$/);matches&&atName.length>maxLength&&(title=matches[1].trim());let titlex=title.substr(0,maxLength).trim();atName.substr(0,titlex.length)!=titlex?(titleNode.title="@name "+atName,""==titlex.replace("‍","","g").trim()?(// NOTE: Watchpoint
+titleNode.textContent=atName,titleNode.classList.add("halb")):titleNode.classList.add("blah")):titleNode.title="@name "+titleNode.title.trim()}}if(descNode=aNode.querySelector(".desc"),descNode){let maxLength=250,// NOTE: Watchpoint
+atDescription=lastValueOf(aMb,"description"),desc=descNode.textContent;if(atDescription){let matches=desc.match(/(.*)\.\.\.$/);matches&&atDescription.length>maxLength&&(desc=matches[1].trim());let descx=desc.substr(0,maxLength).toLowerCase().trim();atDescription.substr(0,descx.length).toLowerCase()!=descx?(descNode.classList.add("blah"),descNode.title="@description "+atDescription):descNode.title="@description "+atDescription}else descNode.classList.add("blah"),descNode.title="undefined @description"}}let nodeImg=document.createElement("img");if(nodeImg.classList.add("more"),nodeImg.src=GM_getResourceURL("clear"),nodeImg.alt="hide",nodeImg.addEventListener("click",unhideClick,!1),actionsNodeDiv.appendChild(nodeImg),!/^(?:\/home\/scripts|\/users\/.+?\/scripts)/.test(gPATHNAME)){let bylineNodeDiv=document.createElement("div");if(bylineNodeDiv.classList.add("byline"),aCollapse&&(bylineNodeDiv.classList.add("pus"),gmcHome.get("alwaysShowAuthorId")?bylineNodeDiv.classList.add("dim"):bylineNodeDiv.classList.add("hid")),descNode?aNode.insertBefore(bylineNodeDiv,descNode):aNode.appendChild(bylineNodeDiv),aMb){let atUsoAuthor=lastValueOf(aMb,"author","uso"),atUsoName=lastValueOf(aMb,"name","uso"),atUsoVanity=lastValueOf(aMb,"vanity","uso");if(atUsoVanity&&atUsoName||atUsoAuthor){if(bylineNodeDiv.appendChild(document.createTextNode("By ")),atUsoVanity&&atUsoName){let vanityNodeA=document.createElement("a");vanityNodeA.href="/users/"+atUsoVanity,vanityNodeA.textContent=atUsoName,bylineNodeDiv.appendChild(vanityNodeA)}if(atUsoAuthor){bylineNodeDiv.appendChild(document.createTextNode(" ("));let authorNodeA=document.createElement("a");authorNodeA.href="/users/"+atUsoAuthor,authorNodeA.textContent=atUsoAuthor,bylineNodeDiv.appendChild(authorNodeA),bylineNodeDiv.appendChild(document.createTextNode(")"))}}}}aReduce&&(nodeImg.classList.remove("more"),nodeImg.classList.add("less"),nodeImg.alt="show",descNode&&descNode.classList.add("hid"),qNodes(gANODES))}}
+/**
+   *
+   */function pushAdvisory(aSa,aAdvisory,aComment){aComment=toArray(aComment),aSa[aAdvisory]||(aSa[aAdvisory]=new Array);for(let comment,i=0;comment=aComment[i++];){let found;for(let commented,j=0;commented=aSa[aAdvisory][j++];)comment==commented&&(found=!0);found||aSa[aAdvisory].push(comment)}}
+/**
+   *
+   */
